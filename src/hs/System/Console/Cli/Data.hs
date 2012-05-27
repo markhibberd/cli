@@ -21,7 +21,7 @@ data Arity =
 data Flag a =
   Switch [Decl] Description (Update a ())
   | Flag [Decl] Meta Description (Update a String)
-  | FlagN Arity [Decl] Meta Description (Update a [String])
+  | FlagN [Decl] Arity Meta Description (Update a [String])
 
 data Positional a =
   Positional Meta (Update a String)
@@ -36,8 +36,8 @@ data Command a b =
 
 type Executable a = Command a (IO ())
 
-toUpdate :: Coerse b => Lens a b -> Update a String
-toUpdate l a s = fmap (\b -> setL l b a) (coerse s)
+toUpdate :: Lens a b -> Update a b
+toUpdate l a b =  Right $  setL l b a
 
 toSet :: Lens a Bool -> Update a ()
 toSet l a _ = Right $ setL l True a
@@ -60,24 +60,39 @@ between = Range
 noop :: Update a ()
 noop a _ = Right a
 
+-- FIX come up with normalise and include environment
+expand :: Char -> String -> [Decl]
+expand s l = [Short s, Long l, Config l]
+
 switch :: Char -> String -> String -> Lens a Bool -> Flag a
 switch s l d u = switch' s l d (toSet u)
 
--- normalise and include environment decl,
 switch' :: Char -> String -> String -> Update a () -> Flag a
-switch' s l = Switch [Short s,  Long l, Config l]
+switch' s l = Switch (expand s l)
 
-flag :: Coerse b => Char -> String -> String -> Lens a b -> Flag a
-flag = undefined
+flag :: Coerse b => Char -> String -> String -> String -> Lens a b -> Flag a
+flag s l m d u = flag' s l m d (toUpdate u)
 
-flagn :: Coerse b => Char -> String -> String -> Arity -> String -> Lens a [b] -> Flag a
-flagn = undefined
+flag' :: Coerse b => Char -> String -> String -> String -> Update a b -> Flag a
+flag' s l m d u = Flag (expand s l) m d (\a v -> coerse v >>= u a)
+
+flagn :: Coerse b => Char -> String -> Arity -> String -> String -> Lens a [b] -> Flag a
+flagn s l n m d u = flagn' s l n m d (toUpdate u)
+
+flagn' :: Coerse b => Char -> String -> Arity -> String -> String -> Update a [b] -> Flag a
+flagn' s l n m d u = FlagN (expand s l) n m d (\a vs -> mapM coerse vs >>= u a)
 
 arg :: Coerse b => String -> Lens a b -> Positional a
-arg = undefined
+arg m u = arg' m (toUpdate u)
 
-args :: Coerse b => String -> Arity -> Lens a [b] -> Positional a
-args = undefined
+arg' :: Coerse b => String -> Update a b -> Positional a
+arg' m u =  Positional m (\a v -> coerse v >>= u a)
+
+args :: Coerse b => Arity -> String -> Lens a [b] -> Positional a
+args n m u = args' n m (toUpdate u)
+
+args' :: Coerse b => Arity -> String -> Update a [b] -> Positional a
+args' n m u = Positionals n m (\a vs -> mapM coerse vs >>= u a)
 
 mode :: [Flag a] -> [Positional a] -> (a -> b) -> Mode a b
 mode = Mode
