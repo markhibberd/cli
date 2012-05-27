@@ -9,19 +9,19 @@ type Meta = String
 data Decl =
   Short Char | Long String | Config String | Environment String
 
+data Arity =
+  Fixed Int
+  | Range Int Int
+  | Variable Int
+
 data Flag a =
   Switch [Decl] (Update a ())
-  | FlagOne [Decl] Meta (Update a String)
-  | FlagZeroPlus [Decl] Meta (Update a [String])
-  | FlagOnePlus [Decl] Meta (Update a [String])
-  | FlagN Int [Decl] Meta (Update a [String])
-  | FlagNM Int Int [Decl] (Update a [String])
+  | Flag [Decl] Meta (Update a String)
+  | FlagN Arity [Decl] Meta (Update a [String])
 
 data Positional a =
-  PositionalOne Meta (Update a String)
-  | PositionalZeroPlus Meta (Update a [String])
-  | PositionalOnePlus Meta (Update a [String])
-  | PositionalN Int Meta (Update a [String])
+  Argument Meta (Update a String)
+  | Arguments Arity Meta (Update a [String])
 
 data Mode a b =
   Mode [Flag a] [Positional a] (a -> b)
