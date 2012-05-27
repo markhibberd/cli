@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances #-}
 module System.Console.Cli where
 
 import Data.Lens.Common
@@ -32,23 +33,51 @@ data Command a b =
 
 type Executable a = Command a (IO ())
 
-switch :: Char -> String -> String -> Lens a String -> Flag a
+type Parser a = String -> Either String a
+
+
+class Coerse a where
+  coerse :: String -> Either String a
+
+instance Coerse String where
+  coerse = Right
+
+instance Coerse Int where
+  coerse = undefined
+
+instance Coerse Bool where
+  coerse = undefined
+
+zeroplus :: Arity
+zeroplus = Variable 0
+
+oneplus :: Arity
+oneplus = Variable 1
+
+twoplus :: Arity
+twoplus = Variable 1
+
+exactly :: Int -> Arity
+exactly = Fixed
+
+between :: Int -> Int -> Arity
+between = Range
+
+
+switch :: Coerse b => Char -> String -> String -> Lens a b -> Flag a
 switch = undefined
 
-flag :: Char -> String -> String -> Lens a String -> Flag a
+flag :: Coerse b => Char -> String -> String -> Lens a b -> Flag a
 flag = undefined
 
-positional :: String -> Lens a String -> Positional a
-positional = undefined
+flagn :: Coerse b => Char -> String -> String -> Arity -> String -> Lens a [b] -> Flag a
+flagn = undefined
 
-positional0' :: String -> Lens a [String] -> Positional a
-positional0' = undefined
+arg :: Coerse b => String -> Lens a b -> Positional a
+arg = undefined
 
-positional1' :: String -> Lens a [String] -> Positional a
-positional1' = undefined
-
-positionalN :: Int -> String -> Lens a [String] -> Positional a
-positionalN = undefined
+args :: Coerse b => String -> Arity -> Lens a [b] -> Positional a
+args = undefined
 
 runpure :: a -> Command a b -> Either String b
 runpure = undefined
