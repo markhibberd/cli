@@ -33,4 +33,6 @@ Library
 
   Exposed-Modules:
                     System.Console.Cli
-
+                    , System.Console.Cli.Coerce
+                    , System.Console.Cli.Data
+                    , System.Console.Cli.Dispatch
