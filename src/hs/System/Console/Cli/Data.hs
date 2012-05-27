@@ -8,7 +8,7 @@ import System.Console.Cli.Coerce
 type Update a b = a -> b -> Either String a
 
 type Name = String
-type Description = Maybe String
+type Description = String
 type Meta = String
 
 data Decl =
@@ -25,8 +25,8 @@ data Flag a =
   | FlagN Arity [Decl] Meta (Update a [String])
 
 data Positional a =
-  Argument Meta (Update a String)
-  | Arguments Arity Meta (Update a [String])
+  Positional Meta (Update a String)
+  | Positionals Arity Meta (Update a [String])
 
 data Mode a b =
   Mode [Flag a] [Positional a] (a -> b)
@@ -69,3 +69,8 @@ arg = undefined
 args :: Coerse b => String -> Arity -> Lens a [b] -> Positional a
 args = undefined
 
+mode :: [Flag a] -> [Positional a] -> (a -> b) -> Mode a b
+mode = undefined
+
+command :: Name -> Description -> [Mode a b] -> Command a b
+command = Command
