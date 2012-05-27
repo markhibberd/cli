@@ -8,7 +8,6 @@ instance Coerse String where
   coerse = Right
 
 instance Coerse Int where
-  coerse = undefined
-
-instance Coerse Bool where
-  coerse = undefined
+  coerse s = case reads s of
+    [(n, "")] -> Right n
+    _ -> Left $ "Invalid integer: " ++ s
