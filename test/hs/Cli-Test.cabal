@@ -1,0 +1,39 @@
+Name:               Cli-Test
+Version:            0.0.1
+Author:             Mark Hibberd <mark@hibberd.id.au>
+Maintainer:         Mark Hibberd <mark@hibberd.id.au>
+Copyright:          Mark Hibberd
+Synopsis:           Test for System.Console.Cli
+Category:           Console
+Description:        Test project for System.Console.Cli
+Homepage:           http://cli.mth.io
+Cabal-Version:      >= 1.6
+Build-Type:         Simple
+
+Source-Repository   head
+  Type:             git
+  Location:         https://github.com/markhibberd/cli.git
+
+Flag                small_base
+  Description:      Choose the new, split-up base package.
+
+Executable          cli-test
+  Hs-Source-Dirs:
+                    ../../src/hs .
+
+  Main-Is:
+                    Main.hs
+
+  Ghc-Options:
+                    -O2
+                    -Wall
+                    -fhpc
+                    -fwarn-tabs
+
+  Build-Depends:
+                   base >= 3 && < 5
+                   , QuickCheck
+                   , test-framework
+                   , test-framework-quickcheck2
+                   , test-framework-hunit
+

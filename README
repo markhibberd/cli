@@ -1,0 +1,25 @@
+NAME
+        cli
+
+DESCRIPTION
+        Command line argument parsing.
+
+        This package aims to provide tools for builing command line
+        parsers. There are other haskell libraries for doing this
+        such as cmdargs, however this library aims to take a different
+        appoach, by leveraging data-lens and adding a few useful features.
+
+USAGE
+        T.B.C.
+
+AUTHOR
+        Mark Hibberd <mark@hibberd.id.au>
+
+NOTES
+        1. official repository
+           https://github.com/markhibberd/cli
+        2. site and documentation
+           http://cli.mth.io
+        3. license (3 point BSD style)
+           https://github.com/markhibberd/cli/blob/master/LICENSE
+

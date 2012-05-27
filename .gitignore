@@ -1,0 +1,8 @@
+*~
+*#*
+.hpc
+/*.lkshs
+/*.iws
+/gen
+/*.sublime-workspace
+

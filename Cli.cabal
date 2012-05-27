@@ -1,0 +1,36 @@
+Name:               cli
+Version:            0.0.1
+License:            BSD3
+Author:             Mark Hibberd <mark@hibberd.id.au>
+Maintainer:         Mark Hibberd <mark@hibberd.id.au>
+Copyright:          Mark Hibberd
+Synopsis:           data-lens base command line parsers
+Category:           Console
+Description:
+                    This library provides a mechanism for defining
+                    command line parsers using lenses.
+Homepage:           http://cli.mth.io
+Cabal-Version:      >= 1.6
+Build-Type:         Simple
+
+Source-Repository   head
+  Type:             git
+  Location:         https://github.com/markhibberd/cli.git
+
+Flag                small_base
+  Description:      Choose the new, split-up base package.
+
+Library
+  Build-Depends:
+                    base >= 3 && < 5
+                    , data-lens >= 2.10.0
+
+  GHC-Options:
+                    -Wall
+
+  Hs-Source-Dirs:
+                    src/hs
+
+  Exposed-Modules:
+                    System.Console.Cli
+

@@ -1,0 +1,6 @@
+:set -isrc/hs
+:l System.Console.Cli 
+:m + System.Console.Cli
+:set prompt ">> "
+:set -Wall
+
