@@ -21,9 +21,9 @@ arguments = [
   ]
 
 demo = command "program" "description" [
---    modeswitch 'h' "help" "display usage" runhelp
---  , modeswitch 'V' "version" "display version" runversion
-    mode flags arguments rundemo
+    modeswitch 'h' "help" "display usage" runhelp
+  , modeswitch 'V' "version" "display version" runversion
+  , mode flags arguments rundemo
   ]
 
 runhelp _ = putStrLn "todo: print help"

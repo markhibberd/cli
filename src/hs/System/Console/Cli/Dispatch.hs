@@ -9,4 +9,4 @@ run :: a -> Command a b -> IO (Either String b)
 run = undefined
 
 dispatch :: a -> Executable a -> IO ()
-dispatch = undefined
+dispatch = error "dispatch todo"

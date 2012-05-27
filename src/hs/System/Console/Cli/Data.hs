@@ -52,10 +52,14 @@ exactly = Fixed
 between :: Int -> Int -> Arity
 between = Range
 
-
+noop :: Update a String
+noop a _ = Right a
 
 switch :: Coerse b => Char -> String -> String -> Lens a b -> Flag a
 switch = undefined
+
+switch' :: Coerse b => Char -> String -> String -> Update a b -> Flag a
+switch' = undefined
 
 flag :: Coerse b => Char -> String -> String -> Lens a b -> Flag a
 flag = undefined
@@ -71,6 +75,10 @@ args = undefined
 
 mode :: [Flag a] -> [Positional a] -> (a -> b) -> Mode a b
 mode = undefined
+
+modeswitch ::Char -> String -> String -> (a -> b) -> Mode a b
+modeswitch s l d f =
+  mode [switch' s l d noop] [] f
 
 command :: Name -> Description -> [Mode a b] -> Command a b
 command = Command
