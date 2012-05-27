@@ -97,8 +97,8 @@ args' n m u = Positionals n m (\a vs -> mapM coerse vs >>= u a)
 mode :: [Flag a] -> [Positional a] -> (a -> b) -> Mode a b
 mode = Mode
 
-modeswitch ::Char -> String -> String -> (a -> b) -> Mode a b
-modeswitch s l d f = mode [switch' s l d noop] [] f
+modeswitch ::Char -> String -> String -> b -> Mode a b
+modeswitch s l d b = mode [switch' s l d noop] [] (const b)
 
 command :: Name -> Description -> [Mode a b] -> Command a b
 command = Command

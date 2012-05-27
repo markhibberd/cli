@@ -21,17 +21,11 @@ arguments = [
   ]
 
 demo = command "program" "description" [
-    modeswitch 'h' "help" "display usage" runhelp
-  , modeswitch 'V' "version" "display version" runversion
+    modeswitch 'h' "help" "display usage" (printhelp demo)
+  , modeswitch 'V' "version" "display version" (printversion demo "0.0.1")
   , mode flags arguments rundemo
   ]
 
-runhelp _ = putStrLn "todo: print help"
-runversion _ = putStrLn "todo: print version"
 rundemo _ = putStrLn "todo: run demo"
 
 main = dispatch defaults demo
-
-
-
-
