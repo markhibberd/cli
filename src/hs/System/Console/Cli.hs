@@ -1,5 +1,7 @@
 module System.Console.Cli where
 
+import Data.Lens.Common
+
 type Update a b = a -> b -> Either String a
 
 type Meta = String
@@ -30,6 +32,24 @@ data Command a b =
 
 type Executable a = Command a (IO ())
 
+switch :: Char -> String -> String -> Lens a String -> Flag a
+switch = undefined
+
+flag :: Char -> String -> String -> Lens a String -> Flag a
+flag = undefined
+
+positional :: String -> Lens a String -> Positional a
+positional = undefined
+
+positional0' :: String -> Lens a [String] -> Positional a
+positional0' = undefined
+
+positional1' :: String -> Lens a [String] -> Positional a
+positional1' = undefined
+
+positionalN :: Int -> String -> Lens a [String] -> Positional a
+positionalN = undefined
+
 runpure :: a -> Command a b -> Either String b
 runpure = undefined
 
@@ -46,11 +66,11 @@ data Arguments = Arguments {
   verbose :: Bool
 }
 
-programflags = flags [
+programflags = [
   switch 'v' "verbose" "verbose ountput" verboseL
 ]
 
-programargs = flags [
+programargs = [
   switch 'v' "verbose" "verbose ountput" verboseL
 ]
 
