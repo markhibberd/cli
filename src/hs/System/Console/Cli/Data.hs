@@ -29,7 +29,7 @@ data Positional a =
 
 data Mode a b =
   Mode [Flag a] [Positional a] (a -> b)
-  | SubMode [Flag a] [Positional a] (Command a b)
+  | SubMode [Flag a] (Command a b)
 
 data Command a b =
   Command Name Description [Mode a b]
