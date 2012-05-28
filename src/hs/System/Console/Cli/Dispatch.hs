@@ -13,11 +13,15 @@ printhelp _ = putStrLn "todo"
 printversion :: Command a b -> String -> IO ()
 printversion (Command n _ _) v = putStrLn $ n ++ " version " ++ v
 
--- FIX implement without environment / conf reading
-runpure :: a -> Command a b -> [String] -> Either String b
-runpure = undefined
 
--- FIX implement environment / conf reading, until then IO is not used, serving as a placeholder
+
+
+
+-- FIX should be a version that taks conf and environment vars
+runpure :: a -> Command a b -> [String] -> Either String b
+runpure a cmd args = undefined
+
+
 run :: a -> Command a b -> IO (Either String b)
 run a cmd = fmap (runpure a cmd) getArgs
 

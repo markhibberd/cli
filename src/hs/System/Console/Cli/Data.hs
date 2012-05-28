@@ -21,7 +21,7 @@ data Arity =
 data Flag a =
   Switch [Decl] Description (Update a ())
   | Flag [Decl] Meta Description (Update a String)
-  | FlagN [Decl] Arity Meta Description (Update a [String])
+  | FlagOpt [Decl] Meta Description (Update a (Maybe String))
 
 data Positional a =
   Positional Meta (Update a String)
@@ -64,6 +64,9 @@ noop a _ = Right a
 expand :: Char -> String -> [Decl]
 expand s l = [Short s, Long l, Config l]
 
+-- FIX sort lens vs update naming convention
+-- FIX add partial lens impls
+-- FIX this should not be specialised to Bool, enums and alike should be possible
 switch :: Char -> String -> String -> Lens a Bool -> Flag a
 switch s l d u = switch' s l d (toSet u)
 
@@ -76,11 +79,8 @@ flag s l m d u = flag' s l m d (toUpdate u)
 flag' :: Coerse b => Char -> String -> String -> String -> Update a b -> Flag a
 flag' s l m d u = Flag (expand s l) m d (\a v -> coerse v >>= u a)
 
-flagn :: Coerse b => Char -> String -> Arity -> String -> String -> Lens a [b] -> Flag a
-flagn s l n m d u = flagn' s l n m d (toUpdate u)
-
-flagn' :: Coerse b => Char -> String -> Arity -> String -> String -> Update a [b] -> Flag a
-flagn' s l n m d u = FlagN (expand s l) n m d (\a vs -> mapM coerse vs >>= u a)
+flagopt :: Coerse b => Char -> String -> String -> String -> Update a (Maybe b) -> Flag a
+flagopt s l m d u = FlagOpt (expand s l) m d (\a v -> undefined)
 
 arg :: Coerse b => String -> Lens a b -> Positional a
 arg m u = arg' m (toUpdate u)
